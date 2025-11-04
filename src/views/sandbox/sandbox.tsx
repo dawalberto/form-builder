@@ -1,4 +1,5 @@
 import { Link, Route, useLocation } from "wouter"
+import { BuildFormSchema } from "./build-form-schema"
 import { MultiStepForm } from "./multi-step-form"
 import { MultiTabForm } from "./multi-tab-form"
 import { RegularForm } from "./regular-form/regular-form"
@@ -29,6 +30,12 @@ export const Sandbox = () => {
         >
           Multi-tab Form
         </Link>
+        <Link
+          href="/sandbox/build-form-schema"
+          className={location.includes("build-form-schema") ? "font-bold text-blue-600" : ""}
+        >
+          Build Form Schema
+        </Link>
       </nav>
 
       <div className="pt-4 px-8">
@@ -36,6 +43,7 @@ export const Sandbox = () => {
         <Route path="/sandbox/regular-form/*" component={RegularForm} />
         <Route path="/sandbox/multi-step-form" component={MultiStepForm} />
         <Route path="/sandbox/multi-tab-form" component={MultiTabForm} />
+        <Route path="/sandbox/build-form-schema" component={BuildFormSchema} />
         <Route path="/sandbox">
           <p>Selecciona una opción del menú.</p>
         </Route>
