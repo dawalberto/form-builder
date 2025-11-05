@@ -16,12 +16,13 @@ export const Button = ({
   onClick: React.MouseEventHandler<HTMLButtonElement> | undefined
 }) => (
   <button
+    type="button"
     onClick={onClick}
     className={clsx(
       "border px-2 py-1 cursor-pointer border-stone-800 text-stone-800",
       variant === EButtonVariants.DEFAULT && "bg-stone-200",
       variant === EButtonVariants.PRIMARY && "bg-emerald-200",
-      variant === EButtonVariants.DANGER && "bg-red-200"
+      variant === EButtonVariants.DANGER && "bg-red-200",
     )}
   >
     {label}

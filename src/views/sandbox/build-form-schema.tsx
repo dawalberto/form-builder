@@ -44,7 +44,7 @@ export const BuildFormSchema = () => {
       <div className="flex flex-col gap-4">
         {fieldsets?.size !== 0 && <h1>Form</h1>}
         {[...(fieldsets?.entries() || [])].map(([fsName, fs]) => (
-          <fieldset className="border border-emerald-400 p-4">
+          <fieldset key={fsName} className="border border-emerald-400 p-4">
             <legend>{fsName}</legend>
             <div>{/* Inputs here */}</div>
             <div className="flex gap-2 justify-end">
