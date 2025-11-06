@@ -1,11 +1,9 @@
 import { Route } from "wouter"
-import { Sandbox } from "./views/sandbox/sandbox"
+import { FormBuilder } from "./views/form-builder"
 
 const App = () => (
   <main className="p-4">
-    <Route path="/" component={() => <h1>Home</h1>} />
-    <Route path="/sandbox" component={Sandbox} />
-    <Route path="/sandbox/*" component={Sandbox} />
+    <Route path="/" component={FormBuilder} />
   </main>
 )
 
