@@ -5,44 +5,47 @@ import { schemaHasUniqueKeys } from "../utils/schema-has-unique-keys"
 
 const SCHEMA_KEY = "_id"
 
-export const FormBuilder = () => {
-  const [formSchemaJSON, setFormSchemaJSON] = useState<string>("")
-  const [formSchema, setFormSchema] = useState<object | null>(null)
+export const SchemaBuilder = () => {
+  const [schemaJSON, setSchemaJSON] = useState<string>("")
+  const [schema, setSchema] = useState<object | null>(null)
   const [validations, setValidations] = useState<{
     validJSON: boolean | null
     validKeys: boolean | null
     validUniqueKeys?: boolean | null
-    // TODO : Add validation for empty id keys ""
+    // TODO - Add validation for empty id keys ""
+    // TODO - Add validation for input types
   }>({ validJSON: null, validKeys: null, validUniqueKeys: null })
 
-  const handleOnFormSchemaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleOnSchemaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value
-    setFormSchemaJSON(value)
+    setSchemaJSON(value)
 
     if (!value) {
-      setFormSchema(null)
+      setSchema(null)
       setValidations({ validJSON: null, validKeys: null, validUniqueKeys: null })
       return
     }
 
     try {
       const schema = JSON.parse(value)
-      console.log("🦊 schema", schema)
       const flattenedSchema = flattenObject(schema)
-      console.log("🦊 flattenedSchema", flattenedSchema)
       const validKeys = schemaHasKeys(flattenedSchema, SCHEMA_KEY)
       setValidations({ validJSON: true, validKeys, validUniqueKeys: null })
+
       if (!validKeys) {
         return
       }
+
       const validUniqueKeys = schemaHasUniqueKeys(flattenedSchema, SCHEMA_KEY)
       setValidations({ validJSON: true, validKeys, validUniqueKeys })
+
       if (!validUniqueKeys) {
         return
       }
-      setFormSchema(flattenedSchema)
-    } catch (error) {
-      console.error("🦊 Error parsing JSON:", error)
+
+      console.log("🦊 flattenedSchema", flattenedSchema)
+      setSchema(flattenedSchema)
+    } catch {
       setValidations({ validJSON: false, validKeys: null, validUniqueKeys: null })
     }
   }
@@ -50,12 +53,12 @@ export const FormBuilder = () => {
   return (
     <main className="space-y-4">
       <div className="flex flex-col gap-2">
-        <label htmlFor="formSchemaJSON">Paste here your Form Schema in JSON format</label>
+        <label htmlFor="schemaJSON">Paste here your Form Schema in JSON format</label>
         <textarea
-          id="formSchemaJSON"
-          name="formSchemaJSON"
-          value={formSchemaJSON}
-          onChange={handleOnFormSchemaChange}
+          id="schemaJSON"
+          name="schemaJSON"
+          value={schemaJSON}
+          onChange={handleOnSchemaChange}
           className="border w-full min-h-96 font-mono p-3 bg-stone-50 text-stone-700"
         />
         <div className="flex flex-col gap-1">
