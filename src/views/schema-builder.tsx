@@ -2,8 +2,18 @@ import { useState } from "react"
 import { flattenObject } from "../utils/flatten-object"
 import { schemaHasKeys } from "../utils/schema-has-keys"
 import { schemaHasUniqueKeys } from "../utils/schema-has-unique-keys"
+import { FormBuilder } from "./form-builder"
 
 const SCHEMA_KEY = "_id"
+
+// type FormField = {
+//   _id: string
+//   type: React.HTMLInputTypeAttribute
+//   label: string
+//   value: any
+//   clearValue?: any
+//   items?: { label: string; value: any }[]
+// }
 
 export const SchemaBuilder = () => {
   const [schemaJSON, setSchemaJSON] = useState<string>("")
@@ -14,6 +24,7 @@ export const SchemaBuilder = () => {
     validUniqueKeys?: boolean | null
     // TODO - Add validation for empty id keys ""
     // TODO - Add validation for input types
+    // TODO - Add validation and types for FormField
   }>({ validJSON: null, validKeys: null, validUniqueKeys: null })
 
   const handleOnSchemaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -82,6 +93,11 @@ export const SchemaBuilder = () => {
           )}
         </div>
       </div>
+      {Object.values(validations).every((v) => v === true) && (
+        <div className="mt-8">
+          <FormBuilder schemaName="Generated" schema={schema as any} />
+        </div>
+      )}
     </main>
   )
 }
