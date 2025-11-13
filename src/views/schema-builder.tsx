@@ -1,31 +1,16 @@
+import clsx from "clsx"
 import { useState } from "react"
-import { flattenObject } from "../utils/flatten-object"
-import { schemaHasKeys } from "../utils/schema-has-keys"
-import { schemaHasUniqueKeys } from "../utils/schema-has-unique-keys"
+import type { ZodError } from "zod"
+import { FormSchema } from "../validations/schema-validation"
 import { FormBuilder } from "./form-builder"
-
-const SCHEMA_KEY = "_id"
-
-// type FormField = {
-//   _id: string
-//   type: React.HTMLInputTypeAttribute
-//   label: string
-//   value: any
-//   clearValue?: any
-//   items?: { label: string; value: any }[]
-// }
 
 export const SchemaBuilder = () => {
   const [schemaJSON, setSchemaJSON] = useState<string>("")
   const [schema, setSchema] = useState<object | null>(null)
   const [validations, setValidations] = useState<{
     validJSON: boolean | null
-    validKeys: boolean | null
-    validUniqueKeys?: boolean | null
-    // TODO - Add validation for empty id keys ""
-    // TODO - Add validation for input types
-    // TODO - Add validation and types for FormField
-  }>({ validJSON: null, validKeys: null, validUniqueKeys: null })
+    fieldsErrors: ZodError[] | null
+  }>({ validJSON: null, fieldsErrors: null })
 
   const handleOnSchemaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value
@@ -33,32 +18,27 @@ export const SchemaBuilder = () => {
 
     if (!value) {
       setSchema(null)
-      setValidations({ validJSON: null, validKeys: null, validUniqueKeys: null })
+      setValidations({ validJSON: null, fieldsErrors: null })
       return
     }
 
     try {
-      const schema = JSON.parse(value)
-      const flattenedSchema = flattenObject(schema)
-      const validKeys = schemaHasKeys(flattenedSchema, SCHEMA_KEY)
-      setValidations({ validJSON: true, validKeys, validUniqueKeys: null })
+      const schemaValidationResult = FormSchema.safeParse(JSON.parse(value))
 
-      if (!validKeys) {
+      if (!schemaValidationResult.success) {
+        setValidations({
+          validJSON: true,
+          fieldsErrors: JSON.parse(schemaValidationResult.error.message),
+        })
         return
       }
-
-      const validUniqueKeys = schemaHasUniqueKeys(flattenedSchema, SCHEMA_KEY)
-      setValidations({ validJSON: true, validKeys, validUniqueKeys })
-
-      if (!validUniqueKeys) {
-        return
-      }
-
-      console.log("🦊 flattenedSchema", flattenedSchema)
-      setSchema(flattenedSchema)
-    } catch {
-      setValidations({ validJSON: false, validKeys: null, validUniqueKeys: null })
+    } catch (error) {
+      setValidations({ validJSON: false, fieldsErrors: null })
+      console.error("Error parsing schema:", error)
+      return
     }
+
+    setValidations({ validJSON: true, fieldsErrors: null })
   }
 
   return (
@@ -72,25 +52,22 @@ export const SchemaBuilder = () => {
           onChange={handleOnSchemaChange}
           className="border w-full min-h-96 font-mono p-3 bg-stone-50 text-stone-700"
         />
-        <div className="flex flex-col gap-1">
-          <p>Validations:</p>
-          {validations.validJSON !== null && (
-            <span>{validations.validJSON ? "✅ Valid JSON" : "❌ Invalid JSON"}</span>
+        <div
+          className={clsx(
+            "flex flex-col gap-1",
+            (validations.validJSON === true || validations.validJSON === null) &&
+              validations.fieldsErrors === null
+              ? "hidden"
+              : "block",
           )}
-          {validations.validKeys !== null && (
-            <span>
-              {validations.validKeys
-                ? "✅ Valid Keys"
-                : "❌ Some object is missing the SCHEMA_KEY key"}
-            </span>
-          )}
-          {validations.validUniqueKeys !== null && (
-            <span>
-              {validations.validUniqueKeys
-                ? "✅ All _id keys are unique"
-                : "❌ There are duplicated SCHEMA_KEY keys"}
-            </span>
-          )}
+        >
+          <span>❌ Schema Errors:</span>
+          <ul className="list-disc list-inside">
+            {validations.validJSON === false && <li>❌ Invalid JSON</li>}
+            {validations.fieldsErrors &&
+              validations.fieldsErrors.length > 0 &&
+              validations.fieldsErrors.map((error, index) => <li key={index}>{error.message}</li>)}
+          </ul>
         </div>
       </div>
       {Object.values(validations).every((v) => v === true) && (
