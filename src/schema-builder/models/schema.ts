@@ -1,5 +1,5 @@
 import type z from "zod"
-import type { FormFieldSchema, FormSchema } from "../validations/schema"
+import type { FormFieldSchema, FormSchema } from "../validations"
 
 type TFormFieldSchemaType = z.infer<typeof FormFieldSchema>
 export type TFormSchemaType = z.infer<typeof FormSchema>

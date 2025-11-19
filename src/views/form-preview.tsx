@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 // import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 // import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism"
+import type { TFieldType, TFormSchemaType } from "@/schema-builder/models"
 import { CopyToClipboardButton } from "../components/copy-to-clipboard-button"
-import { type TFieldType, type TFormSchemaType } from "../models"
 
 export const FormPreview = ({ schema }: { schema: TFormSchemaType }) => {
   console.log("🦊 schema", schema)

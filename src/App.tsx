@@ -1,6 +1,6 @@
 import { Route } from "wouter"
+import { SchemaBuilder } from "./schema-builder/views/schema-builder"
 import { DynamicForm } from "./views/dynamic-form"
-import { SchemaBuilder } from "./views/schema-builder"
 
 const App = () => (
   <main className="p-4">

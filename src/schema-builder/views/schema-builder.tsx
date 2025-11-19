@@ -1,30 +1,28 @@
+import { useStickyState } from "@/hooks"
+import { FormPreview } from "@/views/form-preview"
 import clsx from "clsx"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import type { ZodError } from "zod"
 import type { TFormSchemaType } from "../models"
 import { FormSchema } from "../validations"
-import { FormPreview } from "./form-preview"
 
 export const SchemaBuilder = () => {
-  const [schemaJSON, setSchemaJSON] = useState<string>("")
+  const [schemaJSON, setSchemaJSON] = useStickyState<string>("", "schema-builder-schema-json")
   const [schema, setSchema] = useState<TFormSchemaType | null>(null)
   const [validations, setValidations] = useState<{
     validJSON: boolean | null
     fieldsErrors: ZodError[] | null
   }>({ validJSON: null, fieldsErrors: null })
 
-  const handleOnSchemaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value
-    setSchemaJSON(value)
-
-    if (!value) {
+  const validateSchema = useCallback((jsonString: string) => {
+    if (!jsonString) {
       setSchema(null)
       setValidations({ validJSON: null, fieldsErrors: null })
       return
     }
 
     try {
-      const schemaValidationResult = FormSchema.safeParse(JSON.parse(value))
+      const schemaValidationResult = FormSchema.safeParse(JSON.parse(jsonString))
 
       if (!schemaValidationResult.success) {
         setValidations({
@@ -42,11 +40,22 @@ export const SchemaBuilder = () => {
     }
 
     setValidations({ validJSON: true, fieldsErrors: null })
-  }
+  }, [])
 
+  const handleOnSchemaChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const value = e.target.value
+      setSchemaJSON(value)
+      validateSchema(value)
+    },
+    [setSchemaJSON, validateSchema],
+  )
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <Must only run on mount if schemaJSON exists in localStorage>
   useEffect(() => {
-    console.log("🦊 validations", validations)
-  }, [validations])
+    if (!schemaJSON) return
+    validateSchema(schemaJSON)
+  }, [])
 
   return (
     <main className="space-y-4">
