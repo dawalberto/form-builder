@@ -66,7 +66,9 @@ export const SchemaBuilder = () => {
             {validations.validJSON === false && <li>❌ Invalid JSON</li>}
             {validations.fieldsErrors &&
               validations.fieldsErrors.length > 0 &&
-              validations.fieldsErrors.map((error, index) => <li key={index}>{error.message}</li>)}
+              validations.fieldsErrors.map(({ name, message }) => (
+                <li key={`${name}-${message}`}>{message}</li>
+              ))}
           </ul>
         </div>
       </div>
