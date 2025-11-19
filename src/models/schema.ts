@@ -1,19 +1,6 @@
-export type FormSchema = {
-  fields: FormField[]
-}
+import type z from "zod"
+import type { FormFieldSchema, FormSchema } from "../validations/schema"
 
-export type FormField = {
-  id: string
-  name: string
-  label?: string
-  type: "text" | "number" | "textarea" | "select" | "checkbox" | "radio"
-
-  defaultValue?: any
-  placeholder?: string
-  required?: boolean
-
-  options?: Array<{
-    label: string
-    value: string | number
-  }>
-}
+type TFormFieldSchemaType = z.infer<typeof FormFieldSchema>
+export type TFormSchemaType = z.infer<typeof FormSchema>
+export type TFieldType = Pick<TFormFieldSchemaType, "type">["type"]

@@ -1,12 +1,13 @@
 import clsx from "clsx"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import type { ZodError } from "zod"
-import { FormSchema } from "../validations/schema-validation"
-import { FormBuilder } from "./form-builder"
+import type { TFormSchemaType } from "../models"
+import { FormSchema } from "../validations"
+import { FormPreview } from "./form-preview"
 
 export const SchemaBuilder = () => {
   const [schemaJSON, setSchemaJSON] = useState<string>("")
-  const [schema, setSchema] = useState<object | null>(null)
+  const [schema, setSchema] = useState<TFormSchemaType | null>(null)
   const [validations, setValidations] = useState<{
     validJSON: boolean | null
     fieldsErrors: ZodError[] | null
@@ -32,6 +33,8 @@ export const SchemaBuilder = () => {
         })
         return
       }
+
+      setSchema(schemaValidationResult.data)
     } catch (error) {
       setValidations({ validJSON: false, fieldsErrors: null })
       console.error("Error parsing schema:", error)
@@ -40,6 +43,10 @@ export const SchemaBuilder = () => {
 
     setValidations({ validJSON: true, fieldsErrors: null })
   }
+
+  useEffect(() => {
+    console.log("🦊 validations", validations)
+  }, [validations])
 
   return (
     <main className="space-y-4">
@@ -72,9 +79,9 @@ export const SchemaBuilder = () => {
           </ul>
         </div>
       </div>
-      {Object.values(validations).every((v) => v === true) && (
+      {validations.validJSON && validations.fieldsErrors === null && schema && (
         <div className="mt-8">
-          <FormBuilder schemaName="Generated" schema={schema as any} />
+          <FormPreview schema={schema} />
         </div>
       )}
     </main>

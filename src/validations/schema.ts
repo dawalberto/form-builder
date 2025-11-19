@@ -147,6 +147,3 @@ export const FormSchema = z.object({
       return ids.length === uniqueIds.size
     }, "Oops! Each field 'id' must be unique"),
 })
-
-export type FormSchemaType = z.infer<typeof FormSchema>
-export type FormFieldSchemaType = z.infer<typeof FormFieldSchema>

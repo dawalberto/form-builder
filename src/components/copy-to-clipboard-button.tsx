@@ -99,39 +99,6 @@ export const CopyToClipboardButton = ({
             : "bg-white text-gray-800 hover:bg-gray-50"
         } ${className}`}
       >
-        {/* Icon (clipboard) */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          aria-hidden="true"
-          className="w-4 h-4"
-        >
-          <path
-            d="M9 2h6a2 2 0 012 2v1h-2V4H9v1H7V4a2 2 0 012-2z"
-            fill="currentColor"
-            opacity="0.12"
-          />
-          <path
-            d="M7 7h10v12a2 2 0 01-2 2H9a2 2 0 01-2-2V7z"
-            stroke="currentColor"
-            strokeWidth="1.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <rect
-            x="9"
-            y="3"
-            width="6"
-            height="2"
-            rx="0.5"
-            stroke="currentColor"
-            strokeWidth="1.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-
         <span>{copied ? successLabel : label}</span>
       </button>
 
