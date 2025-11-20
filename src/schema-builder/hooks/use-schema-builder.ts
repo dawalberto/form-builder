@@ -53,7 +53,6 @@ export const useSchemaBuilder = () => {
   // biome-ignore lint/correctness/useExhaustiveDependencies: <Must only run on mount if schemaJSON exists in localStorage>
   useEffect(() => {
     if (!schemaJSON) return
-    console.log("💣🚨 schemaJSON")
     validateSchema(schemaJSON)
   }, [])
 

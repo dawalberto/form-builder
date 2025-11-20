@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import { FormPreview } from "@/views/form-preview"
+import { FormPreview } from "@/form-preview/views/form-preview"
 import { useSchemaBuilder } from "../hooks"
 
 export const SchemaBuilder = () => {
