@@ -1,17 +1,35 @@
-export const generateCommonInputHandler = () => `
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+export const INPUT_COMMON_HANDLER_NAME = "handleInputChange"
+export const INPUT_NUMBER_HANDLER_NAME = "handleNumberChange"
+export const INPUT_CHECKBOX_HANDLER_NAME = "handleCheckboxChange"
+
+export const generateInputCommonHandler = () => `
+  const ${INPUT_COMMON_HANDLER_NAME} = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
   `
 
 export const generateInputNumberHandler = () => `
-  const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const ${INPUT_NUMBER_HANDLER_NAME} = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     const numericValue = value === "" ? "" : Number(value)
     setFormData(prev => ({ ...prev, [name]: numericValue }))
   }
   `
+
+export const generateCheckboxHandler = () => `
+  const ${INPUT_CHECKBOX_HANDLER_NAME} = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target
+    setFormData(prev => ({ ...prev, [name]: checked }))
+  }
+  `
+
+// export const generateSelectSingleHandler = () => `
+//   const handleSelectSingleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+//     const { name, value } = e.target
+//     setFormData(prev => ({ ...prev, [name]: value }))
+//   }
+//   `
 
 // export const generateSelectMultipleHandler = () => `
 //     const handleSelectMultipleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -20,11 +38,3 @@ export const generateInputNumberHandler = () => `
 //       setFormData(prev => ({ ...prev, [name]: { ...prev[name], value: selectedValues } }))
 //     }
 //     `
-
-export const generateRadioHandler = () => `
-  const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    const booleanValue = value === "true"
-    setFormData(prev => ({ ...prev, [name]: booleanValue }))
-  }
-  `
