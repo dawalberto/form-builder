@@ -3,7 +3,8 @@ import { FormPreview } from "@/form-preview/views/form-preview"
 import { useSchemaBuilder } from "../hooks"
 
 export const SchemaBuilder = () => {
-  const { schema, schemaJSON, validations, handleOnSchemaChange } = useSchemaBuilder()
+  const { schema, schemaJSON, validations, handleOnSchemaBlur, handleOnSchemaChange } =
+    useSchemaBuilder()
 
   return (
     <main className="space-y-4">
@@ -14,6 +15,7 @@ export const SchemaBuilder = () => {
           name="schemaJSON"
           value={schemaJSON}
           onChange={handleOnSchemaChange}
+          onBlur={handleOnSchemaBlur}
           className="border w-full min-h-96 font-mono p-3 bg-stone-50 text-stone-700"
         />
         <div

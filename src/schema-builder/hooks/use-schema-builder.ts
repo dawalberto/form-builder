@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import type { ZodError } from "zod"
 import { useStickyState } from "@/hooks"
+import { debounce } from "@/utils"
 import type { TFormSchemaType } from "../models"
 import { FormSchema } from "../validations"
 
@@ -13,6 +14,7 @@ export const useSchemaBuilder = () => {
   }>({ validJSON: null, fieldsErrors: null })
 
   const validateSchema = useCallback((jsonString: string) => {
+    console.log("💣🚨 validating")
     // Empty textarea case
     if (!jsonString) {
       setSchema(null)
@@ -41,13 +43,32 @@ export const useSchemaBuilder = () => {
     setValidations({ validJSON: true, fieldsErrors: null })
   }, [])
 
+  const debouncedValidate = useMemo(
+    () => debounce((value: string) => validateSchema(value)),
+    [validateSchema],
+  )
+
   const handleOnSchemaChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const value = e.target.value
       setSchemaJSON(value)
-      validateSchema(value)
+      debouncedValidate(value)
     },
-    [setSchemaJSON, validateSchema],
+    [setSchemaJSON, debouncedValidate],
+  )
+
+  const handleOnSchemaBlur = useCallback(
+    (e: React.FocusEvent<HTMLTextAreaElement>) => {
+      const value = e.target.value
+      try {
+        const parsed = JSON.parse(value)
+        const formatted = JSON.stringify(parsed, null, 2)
+        setSchemaJSON(formatted)
+      } catch {
+        // Do nothing if JSON is invalid
+      }
+    },
+    [setSchemaJSON],
   )
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <Must only run on mount if schemaJSON exists in localStorage>
@@ -56,10 +77,17 @@ export const useSchemaBuilder = () => {
     validateSchema(schemaJSON)
   }, [])
 
+  useEffect(() => {
+    return () => {
+      debouncedValidate.cancel?.()
+    }
+  }, [debouncedValidate])
+
   return {
     schema,
     schemaJSON,
     validations,
+    handleOnSchemaBlur,
     handleOnSchemaChange,
   }
 }

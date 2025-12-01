@@ -1,8 +1,8 @@
-import * as parserBabel from "prettier/plugins/babel"
-import * as parserEstree from "prettier/plugins/estree"
-import * as parserHtml from "prettier/plugins/html"
-import * as parserTypeScript from "prettier/plugins/typescript"
-import * as prettier from "prettier/standalone"
+import parserBabel from "prettier/plugins/babel"
+import parserEstree from "prettier/plugins/estree"
+import parserHtml from "prettier/plugins/html"
+import parserTypeScript from "prettier/plugins/typescript"
+import prettier from "prettier/standalone"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import type { TFieldType, TFormSchemaType } from "@/schema-builder/models"
 import { FIELDS_TYPES_COUNT_INITIAL_VALUE } from "../constants"
@@ -115,8 +115,8 @@ export const useFormPreview = ({ schema }: { schema: TFormSchemaType }) => {
             parserBabel, // keep JSX support
             parserEstree,
             parserHtml,
-            parserTypeScript, // ADD THIS
-          ] as any,
+            parserTypeScript,
+          ],
           semi: false,
           singleQuote: true,
           printWidth: 90,
