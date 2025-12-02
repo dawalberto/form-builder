@@ -11,6 +11,7 @@
     "format": "biome format . --write"
   },
   "dependencies": {
+    "@codesandbox/sandpack-react": "^2.20.0",
     "clsx": "^2.1.1",
     "prettier": "^3.6.2",
     "react": "^19.1.1",
