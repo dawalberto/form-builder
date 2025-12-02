@@ -65,7 +65,15 @@ export const FormFieldSchema = z
       .string({
         message: "Oops! The 'name' field is missing. Make sure it's a text value",
       })
-      .min(1, "The 'name' field cannot be empty"),
+      .min(1, "The 'name' field cannot be empty")
+      .regex(
+        /^[A-Za-z_$][A-Za-z0-9_$]*$/,
+        "Please choose a short name using only letters, numbers, or _",
+      )
+      .refine(
+        (v) => !reservedWords.has(v),
+        "This word can’t be used as a name. Please choose a different one.",
+      ),
 
     label: z
       .string({
@@ -145,5 +153,10 @@ export const FormSchema = z.object({
       const ids = fields.map((f) => f.id.toLowerCase())
       const uniqueIds = new Set(ids)
       return ids.length === uniqueIds.size
-    }, "Oops! Each field 'id' must be unique"),
+    }, "Oops! Each field 'id' must be unique")
+    .refine((fields) => {
+      const names = fields.map((f) => f.name.toLowerCase())
+      const uniqueNames = new Set(names)
+      return names.length === uniqueNames.size
+    }, "Oops! Each field 'name' must be unique"),
 })
