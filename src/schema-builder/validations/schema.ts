@@ -54,11 +54,11 @@ export const FormFieldSchema = z
       .min(1, "The 'id' field cannot be empty")
       .regex(
         /^[A-Za-z_$][A-Za-z0-9_$]*$/,
-        "Please choose a short name using only letters, numbers, or _",
+        "Please choose a short name using only letters, numbers, or _ for the 'id' field",
       )
       .refine(
         (v) => !reservedWords.has(v),
-        "This word can’t be used as a name. Please choose a different one.",
+        "The value used for the 'id' field is a reserved word. Please choose a different one.",
       ),
 
     name: z
@@ -68,11 +68,11 @@ export const FormFieldSchema = z
       .min(1, "The 'name' field cannot be empty")
       .regex(
         /^[A-Za-z_$][A-Za-z0-9_$]*$/,
-        "Please choose a short name using only letters, numbers, or _",
+        "Please choose a short name using only letters, numbers, or _ for the 'name' field",
       )
       .refine(
         (v) => !reservedWords.has(v),
-        "This word can’t be used as a name. Please choose a different one.",
+        "The value used for the 'name' field is a reserved word. Please choose a different one.",
       ),
 
     label: z
@@ -135,14 +135,14 @@ export const FormSchema = z.object({
     .string({
       message: "Oops! The 'name' of the form is missing. Make sure it's a text value",
     })
-    .min(1, "The 'name' field cannot be empty")
+    .min(1, "The name of the form cannot be empty")
     .regex(
       /^[A-Za-z_$][A-Za-z0-9_$]*$/,
-      "Please choose a short name using only letters, numbers, or _",
+      "Please choose a short name using only letters, numbers, or _ for the name of the form",
     )
     .refine(
       (v) => !reservedWords.has(v),
-      "This word can’t be used as a name. Please choose a different one.",
+      "The value used for the 'name' of the form is a reserved word. Please choose a different one.",
     ),
   fields: z
     .array(FormFieldSchema, {
