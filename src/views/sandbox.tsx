@@ -47,30 +47,41 @@ export const PersonForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <label htmlFor="namesa">Name</label>
       <input
         type="text"
+        id="namesa"
         name="name"
         value={formData.name}
         onChange={handleInputChange}
         placeholder="Enter your name"
         className="input-text"
       />
+
+      <label htmlFor="age">Age</label>
       <input
         type="number"
+        id="age"
         name="age"
         value={formData.age}
         onChange={handleNumberChange}
         placeholder="Enter your age"
         className="input-number"
       />
+
+      <label htmlFor="bio">Biography</label>
       <textarea
+        id="bio"
         name="bio"
         value={formData.bio}
         onChange={handleInputChange}
         placeholder="Tell us about yourself"
         className="input-textarea"
       />
+
+      <label htmlFor="country">Country</label>
       <select
+        id="country"
         name="country"
         value={formData.country}
         onChange={handleInputChange}
@@ -80,7 +91,10 @@ export const PersonForm = () => {
         <option value="us">USA</option>
         <option value="de">Germany</option>
       </select>
+
+      <label htmlFor="company">Company</label>
       <select
+        id="company"
         name="company"
         value={formData.company}
         onChange={handleInputChange}
@@ -90,13 +104,17 @@ export const PersonForm = () => {
         <option value="us">USA</option>
         <option value="de">Germany</option>
       </select>
+
       <input
         type="checkbox"
+        id="subscribe"
         name="subscribe"
         checked={formData.subscribe}
         onChange={handleCheckboxChange}
         className="input-checkbox"
       />
+      <label htmlFor="subscribe">Subscribe to newsletter</label>
+
       <label>
         <input
           type="radio"

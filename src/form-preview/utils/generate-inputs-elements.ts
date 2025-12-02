@@ -2,8 +2,11 @@ import type { TFormFieldSchemaType } from "@/schema-builder/models"
 import { INPUTS_HANDLERS_NAMES } from "../constants"
 
 export const generateInputTextElement = (field: TFormFieldSchemaType, handler: string): string => {
-  return `<input
+  return `
+    ${field.label ? `<label htmlFor="${field.id}">${field.label}</label>` : ""}
+    <input
     type="text"
+    id="${field.id}"
     name="${field.name}"
     value={formData.${field.name}}
     onChange={${handler}}
@@ -16,8 +19,11 @@ export const generateInputNumberElement = (
   field: TFormFieldSchemaType,
   handler: string,
 ): string => {
-  return `<input
+  return `
+    ${field.label ? `<label htmlFor="${field.id}">${field.label}</label>` : ""}
+    <input
     type="number"
+    id="${field.id}"
     name="${field.name}"
     value={formData.${field.name}}
     onChange={${handler}}
@@ -47,20 +53,27 @@ export const generateInputCheckboxElement = (
   field: TFormFieldSchemaType,
   handler: string,
 ): string => {
-  return `<input
-    type="checkbox"
-    name="${field.name}"
-    checked={formData.${field.name}}
-    onChange={${handler}}
-    className="input-checkbox"
-  />`
+  return `
+  <input
+  type="checkbox"
+  id="${field.id}"
+  name="${field.name}"
+  checked={formData.${field.name}}
+  onChange={${handler}}
+  className="input-checkbox"
+  />
+  ${field.label ? `<label htmlFor="${field.id}">${field.label}</label>` : ""}
+  `
 }
 
 export const generateInputTextareaElement = (
   field: TFormFieldSchemaType,
   handler: string,
 ): string => {
-  return `<textarea
+  return `
+    ${field.label ? `<label htmlFor="${field.id}">${field.label}</label>` : ""}
+    <textarea
+    id="${field.id}"
     name="${field.name}"
     value={formData.${field.name}}
     onChange={${handler}}
@@ -73,7 +86,10 @@ export const generateInputSelectElement = (
   field: TFormFieldSchemaType,
   handler: string,
 ): string => {
-  return `<select
+  return `
+    ${field.label ? `<label htmlFor="${field.id}">${field.label}</label>` : ""}
+    <select
+    id="${field.id}"
     name="${field.name}"
     value={formData.${field.name}}
     onChange={${handler}}
@@ -106,10 +122,3 @@ export const generateInputElementsList = (fields: TFormFieldSchemaType[]): strin
     .map((field) => generateInputElements(field, INPUTS_HANDLERS_NAMES[field.type]))
     .join("\n")
 }
-
-// export const generateFormElement = (schemaName: string, inputs: string): string => {
-//   return `<form onSubmit={handleSubmit}>
-//     ${inputs}
-//     <button type="submit">Submit</button>
-//   </form>`
-// }

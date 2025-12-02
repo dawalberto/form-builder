@@ -4,7 +4,7 @@ import parserHtml from "prettier/plugins/html"
 import parserTypeScript from "prettier/plugins/typescript"
 import prettier from "prettier/standalone"
 import { useCallback, useEffect, useMemo, useState } from "react"
-import type { TFieldType, TFormSchemaType } from "@/schema-builder/models"
+import type { TFormSchemaType } from "@/schema-builder/models"
 import { FIELDS_TYPES_COUNT_INITIAL_VALUE } from "../constants"
 import {
   generateCheckboxHandler,
@@ -17,21 +17,13 @@ import { generateInputElementsList } from "../utils/generate-inputs-elements"
 
 export const useFormPreview = ({ schema }: { schema: TFormSchemaType }) => {
   const [formStringComponent, setFormStringComponent] = useState<string>("")
-  const [fieldsTypesCount, setFieldsTypesCount] = useState<Record<TFieldType, number>>(
-    FIELDS_TYPES_COUNT_INITIAL_VALUE,
-  )
 
-  useEffect(() => {
-    console.log("🦊 schema", schema)
-    console.log("🦊 fieldsTypesCount", fieldsTypesCount)
-  }, [schema, fieldsTypesCount])
-
-  useEffect(() => {
+  const fieldsTypesCount = useMemo(() => {
     const typesCount = { ...FIELDS_TYPES_COUNT_INITIAL_VALUE }
     Object.values(schema.fields).forEach(({ type }) => {
       typesCount[type] = (typesCount[type] || 0) + 1
     })
-    setFieldsTypesCount(typesCount)
+    return typesCount
   }, [schema])
 
   const inputCommonHandler = useMemo(() => {
