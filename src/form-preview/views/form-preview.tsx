@@ -1,8 +1,8 @@
 import { Sandpack } from "@codesandbox/sandpack-react"
-import type { TFormSchemaType } from "@/schema-builder/models"
 import { useFormPreview } from "../hooks"
-export const FormPreview = ({ schema }: { schema: TFormSchemaType }) => {
-  const { formStringComponent } = useFormPreview({ schema })
+
+export const FormPreview = () => {
+  const { formStringComponent, formName } = useFormPreview()
 
   return (
     <div>
@@ -13,10 +13,10 @@ export const FormPreview = ({ schema }: { schema: TFormSchemaType }) => {
             "/form.tsx": formStringComponent,
             "/App.tsx": `
             import React from "react";
-            import { ${schema.name}Form } from "./form";
+            import { ${formName}Form } from "./form";
 
             export default function App() {
-              return <${schema.name}Form />
+              return <${formName}Form />
             }`,
           }}
           theme="auto"

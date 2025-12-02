@@ -4,7 +4,7 @@ import parserHtml from "prettier/plugins/html"
 import parserTypeScript from "prettier/plugins/typescript"
 import prettier from "prettier/standalone"
 import { useCallback, useEffect, useMemo, useState } from "react"
-import type { TFormSchemaType } from "@/schema-builder/models"
+import { useAppStore } from "@/shared/stores"
 import { FIELDS_TYPES_COUNT_INITIAL_VALUE } from "../constants"
 import {
   generateCheckboxHandler,
@@ -15,12 +15,13 @@ import {
 } from "../utils"
 import { generateInputElementsList } from "../utils/generate-inputs-elements"
 
-export const useFormPreview = ({ schema }: { schema: TFormSchemaType }) => {
+export const useFormPreview = () => {
   const [formStringComponent, setFormStringComponent] = useState<string>("")
+  const schema = useAppStore((state) => state.schema)
 
   const fieldsTypesCount = useMemo(() => {
     const typesCount = { ...FIELDS_TYPES_COUNT_INITIAL_VALUE }
-    Object.values(schema.fields).forEach(({ type }) => {
+    Object.values(schema?.fields || {}).forEach(({ type }) => {
       typesCount[type] = (typesCount[type] || 0) + 1
     })
     return typesCount
@@ -53,10 +54,14 @@ export const useFormPreview = ({ schema }: { schema: TFormSchemaType }) => {
   }, [fieldsTypesCount.checkbox])
 
   const inputsElements = useMemo(() => {
+    if (!schema) return ""
+
     return generateInputElementsList(schema.fields)
   }, [schema])
 
   const buildFormStringComponent = useCallback(() => {
+    if (!schema) return ""
+
     const formDataType = generateFormDataType(schema)
 
     let code = `import type React from "react"\n`
@@ -124,5 +129,5 @@ export const useFormPreview = ({ schema }: { schema: TFormSchemaType }) => {
     formatCode()
   }, [buildFormStringComponent])
 
-  return { formStringComponent }
+  return { formStringComponent, formName: schema?.name || "" }
 }

@@ -1,47 +1,48 @@
-import { useCallback, useEffect, useMemo, useState } from "react"
-import type { ZodError } from "zod"
+import { useCallback, useEffect, useMemo } from "react"
+import { useShallow } from "zustand/shallow"
 import { useStickyState } from "@/shared/hooks"
+import { useAppStore } from "@/shared/stores"
 import { debounce } from "@/shared/utils"
-import type { TFormSchemaType } from "../models"
 import { FormSchema } from "../validations"
 
 export const useSchemaBuilder = () => {
   const [schemaJSON, setSchemaJSON] = useStickyState<string>("", "schema-builder-schema-json")
-  const [schema, setSchema] = useState<TFormSchemaType | null>(null)
-  const [validations, setValidations] = useState<{
-    validJSON: boolean | null
-    fieldsErrors: ZodError[] | null
-  }>({ validJSON: null, fieldsErrors: null })
+  const { setSchema, setTSchemaValidations } = useAppStore(
+    useShallow(({ setSchema, setTSchemaValidations }) => ({ setSchema, setTSchemaValidations })),
+  )
 
-  const validateSchema = useCallback((jsonString: string) => {
-    console.log("💣🚨 validating")
-    // Empty textarea case
-    if (!jsonString) {
-      setSchema(null)
-      setValidations({ validJSON: null, fieldsErrors: null })
-      return
-    }
-
-    try {
-      const schemaValidationResult = FormSchema.safeParse(JSON.parse(jsonString))
-
-      if (!schemaValidationResult.success) {
-        setValidations({
-          validJSON: true,
-          fieldsErrors: JSON.parse(schemaValidationResult.error.message),
-        })
+  const validateSchema = useCallback(
+    (jsonString: string) => {
+      console.log("💣🚨 validating")
+      // Empty textarea case
+      if (!jsonString) {
+        setSchema(null)
+        setTSchemaValidations({ validJSON: null, fieldsErrors: null })
         return
       }
 
-      setSchema(schemaValidationResult.data)
-    } catch (error) {
-      setValidations({ validJSON: false, fieldsErrors: null })
-      console.error("Error parsing schema:", error)
-      return
-    }
+      try {
+        const schemaValidationResult = FormSchema.safeParse(JSON.parse(jsonString))
 
-    setValidations({ validJSON: true, fieldsErrors: null })
-  }, [])
+        if (!schemaValidationResult.success) {
+          setTSchemaValidations({
+            validJSON: true,
+            fieldsErrors: JSON.parse(schemaValidationResult.error.message),
+          })
+          return
+        }
+
+        setSchema(schemaValidationResult.data)
+      } catch (error) {
+        setTSchemaValidations({ validJSON: false, fieldsErrors: null })
+        console.error("Error parsing schema:", error)
+        return
+      }
+
+      setTSchemaValidations({ validJSON: true, fieldsErrors: null })
+    },
+    [setSchema, setTSchemaValidations],
+  )
 
   const debouncedValidate = useMemo(
     () => debounce((value: string) => validateSchema(value)),
@@ -84,9 +85,7 @@ export const useSchemaBuilder = () => {
   }, [debouncedValidate])
 
   return {
-    schema,
     schemaJSON,
-    validations,
     handleOnSchemaBlur,
     handleOnSchemaChange,
   }
