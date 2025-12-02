@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 import type { ZodError } from "zod"
-import { useStickyState } from "@/hooks"
-import { debounce } from "@/utils"
+import { useStickyState } from "@/shared/hooks"
+import { debounce } from "@/shared/utils"
 import type { TFormSchemaType } from "../models"
 import { FormSchema } from "../validations"
 
