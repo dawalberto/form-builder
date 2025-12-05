@@ -1,6 +1,6 @@
 import { Route } from "wouter"
 import { FormPreview } from "./form-preview/views"
-import { SchemaBuilder } from "./schema-builder/views/schema-builder"
+import { SchemaBuilder } from "./schema-builder/views"
 import { NavigationButtons } from "./shared/components"
 import { NAV_URLS } from "./shared/constants"
 

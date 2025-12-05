@@ -1,1 +1,1 @@
-export * from "./form-preview"
+export * from "./FormPreview"

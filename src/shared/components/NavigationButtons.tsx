@@ -9,7 +9,7 @@ export const NavigationButtons = () => {
   const isValidSchema = useAppStore(({ isValidSchema }) => isValidSchema)
 
   return (
-    <div className="w-fit flex gap-4 items-center justify-center fixed bottom-4 left-1/2 -translate-x-1/2 border border-stone-600 bg-stone-100">
+    <div className="w-fit flex gap-4 items-center justify-center fixed bottom-2 left-1/2 -translate-x-1/2 border border-stone-600 bg-stone-100">
       <Activity mode={location !== NAV_URLS.SCHEMA_BUILDER ? "visible" : "hidden"}>
         <button
           type="button"

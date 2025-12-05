@@ -1,1 +1,1 @@
-export * from "./navigation-buttons"
+export * from "./NavigationButtons"
