@@ -1,5 +1,4 @@
 import clsx from "clsx"
-import { Link } from "wouter"
 import { FULL_HEIGHT_WITH_PADDING } from "@/shared/constants"
 import { SchemaValidations } from "../components"
 import { useSchemaBuilder } from "../hooks"
@@ -21,7 +20,6 @@ export const SchemaBuilder = () => {
         onBlur={handleOnSchemaBlur}
         className="border w-full h-full font-mono p-3 bg-stone-50 text-stone-700"
       />
-      <Link href="/form-preview">Go to Form Preview</Link>
     </main>
   )
 }

@@ -1,11 +1,14 @@
 import { Route } from "wouter"
 import { FormPreview } from "./form-preview/views"
 import { SchemaBuilder } from "./schema-builder/views/schema-builder"
+import { NavigationButtons } from "./shared/components"
+import { NAV_URLS } from "./shared/constants"
 
 const App = () => (
   <main className="p-4">
-    <Route path="/" component={SchemaBuilder} />
-    <Route path="/form-preview" component={FormPreview} />
+    <Route path={NAV_URLS.SCHEMA_BUILDER} component={SchemaBuilder} />
+    <Route path={NAV_URLS.FORM_PREVIEW} component={FormPreview} />
+    <NavigationButtons />
   </main>
 )
 

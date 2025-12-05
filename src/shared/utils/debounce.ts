@@ -1,5 +1,5 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: <> */
-export const debounce = <T extends (...args: any[]) => void>(callback: T, wait = 1000) => {
+export const debounce = <T extends (...args: any[]) => void>(callback: T, wait = 300) => {
   let timeoutId: number | null = null
 
   const debounced = (...args: Parameters<T>) => {

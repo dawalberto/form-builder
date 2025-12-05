@@ -4,6 +4,8 @@ import parserHtml from "prettier/plugins/html"
 import parserTypeScript from "prettier/plugins/typescript"
 import prettier from "prettier/standalone"
 import { useCallback, useEffect, useMemo, useState } from "react"
+import { useLocation } from "wouter"
+import { useShallow } from "zustand/shallow"
 import { useAppStore } from "@/shared/stores"
 import { FIELDS_TYPES_COUNT_INITIAL_VALUE } from "../constants"
 import {
@@ -16,8 +18,11 @@ import {
 import { generateInputElementsList } from "../utils/generate-inputs-elements"
 
 export const useFormPreview = () => {
+  const [_, navigate] = useLocation()
   const [formStringComponent, setFormStringComponent] = useState<string>("")
-  const schema = useAppStore((state) => state.schema)
+  const { schema, isValidSchema } = useAppStore(
+    useShallow(({ schema, isValidSchema }) => ({ schema, isValidSchema })),
+  )
 
   const fieldsTypesCount = useMemo(() => {
     const typesCount = { ...FIELDS_TYPES_COUNT_INITIAL_VALUE }
@@ -128,6 +133,12 @@ export const useFormPreview = () => {
 
     formatCode()
   }, [buildFormStringComponent])
+
+  useEffect(() => {
+    if (!isValidSchema) {
+      navigate("/")
+    }
+  }, [isValidSchema, navigate])
 
   return { formStringComponent, formName: schema?.name || "" }
 }

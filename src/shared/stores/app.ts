@@ -10,15 +10,28 @@ type TSchemaValidations = {
 type AppState = {
   schema: TFormSchemaType | null
   schemaValidations: TSchemaValidations | null
+  isValidSchema: boolean
 
   setSchema: (schema: TFormSchemaType | null) => void
   setTSchemaValidations: (validations: TSchemaValidations | null) => void
 }
 
-export const useAppStore = create<AppState>((set) => ({
+export const useAppStore = create<AppState>((set, get) => ({
   schema: null,
   schemaValidations: null,
+  isValidSchema: false,
 
   setSchema: (schema) => set({ schema }),
-  setTSchemaValidations: (schemaValidations) => set({ schemaValidations }),
+  setTSchemaValidations: (schemaValidations) => {
+    const schema = get().schema
+    set({
+      schemaValidations,
+      isValidSchema: isValidSchema(schema, schemaValidations),
+    })
+  },
 }))
+
+const isValidSchema = (
+  schema: AppState["schema"],
+  schemaValidations: AppState["schemaValidations"],
+): boolean => !!(!!schema && schemaValidations?.validJSON && !schemaValidations?.fieldsErrors)
