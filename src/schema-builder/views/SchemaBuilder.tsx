@@ -1,25 +1,15 @@
-import clsx from "clsx"
-import { FULL_HEIGHT_WITH_PADDING } from "@/shared/constants"
+import { JSONEditor } from "@/shared/components"
 import { SchemaValidations } from "../components"
 import { useSchemaBuilder } from "../hooks"
 
 export const SchemaBuilder = () => {
-  const { schemaJSON, handleOnSchemaBlur, handleOnSchemaChange } = useSchemaBuilder()
+  const { schemaJSON, handleOnSchemaChange } = useSchemaBuilder()
 
   return (
-    <main className={clsx(FULL_HEIGHT_WITH_PADDING, "flex flex-col gap-y-2")}>
+    <main className="flex flex-col gap-y-2">
       <SchemaValidations />
-      <label htmlFor="schemaJSON" className="font-semibold">
-        👇 Paste here your Form Schema in JSON format
-      </label>
-      <textarea
-        id="schemaJSON"
-        name="schemaJSON"
-        value={schemaJSON}
-        onChange={handleOnSchemaChange}
-        onBlur={handleOnSchemaBlur}
-        className="border w-full h-full font-mono p-3 bg-stone-50 text-stone-700"
-      />
+      <span className="text-center">↓ Paste here your Form Schema in JSON format ↓</span>
+      <JSONEditor value={schemaJSON} onChange={handleOnSchemaChange} />
     </main>
   )
 }

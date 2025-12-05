@@ -1,4 +1,5 @@
 import { Sandpack } from "@codesandbox/sandpack-react"
+import { Activity } from "react"
 import { useFormPreview } from "../hooks"
 
 export const FormPreview = () => {
@@ -6,8 +7,7 @@ export const FormPreview = () => {
 
   return (
     <div>
-      <h2>Generated Form Component</h2>
-      {formStringComponent && (
+      <Activity mode={formStringComponent ? "visible" : "hidden"}>
         <Sandpack
           files={{
             "/form.tsx": formStringComponent,
@@ -19,20 +19,20 @@ export const FormPreview = () => {
               return <${formName}Form />
             }`,
           }}
-          theme="auto"
+          theme="light"
           template="react-ts"
           options={{
             externalResources: ["https://cdn.jsdelivr.net/npm/sakura.css/css/sakura.css"],
             readOnly: true,
             showReadOnly: false,
             showNavigator: true,
-            editorHeight: "100dvh",
+            editorHeight: "95dvh",
             activeFile: "/form.tsx",
             visibleFiles: ["/form.tsx"],
             editorWidthPercentage: 70,
           }}
         />
-      )}
+      </Activity>
     </div>
   )
 }

@@ -8,6 +8,7 @@ const App = () => (
   <main className="p-4">
     <Route path={NAV_URLS.SCHEMA_BUILDER} component={SchemaBuilder} />
     <Route path={NAV_URLS.FORM_PREVIEW} component={FormPreview} />
+    {/* <Route path="/sandbox" component={Sandbox} /> */}
     <NavigationButtons />
   </main>
 )

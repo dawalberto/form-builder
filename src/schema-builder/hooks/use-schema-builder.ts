@@ -50,26 +50,11 @@ export const useSchemaBuilder = () => {
   )
 
   const handleOnSchemaChange = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      const value = e.target.value
-      setSchemaJSON(value)
-      debouncedValidate(value)
+    (schemaValue: string) => {
+      setSchemaJSON(schemaValue)
+      debouncedValidate(schemaValue)
     },
     [setSchemaJSON, debouncedValidate],
-  )
-
-  const handleOnSchemaBlur = useCallback(
-    (e: React.FocusEvent<HTMLTextAreaElement>) => {
-      const value = e.target.value
-      try {
-        const parsed = JSON.parse(value)
-        const formatted = JSON.stringify(parsed, null, 2)
-        setSchemaJSON(formatted)
-      } catch {
-        // Do nothing if JSON is invalid
-      }
-    },
-    [setSchemaJSON],
   )
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <Must only run on mount if schemaJSON exists in localStorage>
@@ -86,7 +71,6 @@ export const useSchemaBuilder = () => {
 
   return {
     schemaJSON,
-    handleOnSchemaBlur,
     handleOnSchemaChange,
   }
 }
