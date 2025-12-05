@@ -16,7 +16,7 @@ export const NavigationButtons = () => {
           onClick={() => navigate(NAV_URLS.SCHEMA_BUILDER)}
           className="hover:bg-stone-200 px-4 py-2 cursor-pointer"
         >
-          ← Back to form builder
+          ← Form builder
         </button>
       </Activity>
       <Activity mode={location === NAV_URLS.SCHEMA_BUILDER ? "visible" : "hidden"}>
@@ -29,7 +29,7 @@ export const NavigationButtons = () => {
             isValidSchema && "bg-emerald-200",
           )}
         >
-          Go to form preview →
+          Form preview →
         </button>
       </Activity>
     </div>

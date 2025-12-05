@@ -54,6 +54,7 @@ export const generateInputCheckboxElement = (
   handler: string,
 ): string => {
   return `
+  ${field.label ? `<label htmlFor="${field.id}">${field.label}</label>` : ""}
   <input
   type="checkbox"
   id="${field.id}"
@@ -62,7 +63,6 @@ export const generateInputCheckboxElement = (
   onChange={${handler}}
   className="input-checkbox"
   />
-  ${field.label ? `<label htmlFor="${field.id}">${field.label}</label>` : ""}
   `
 }
 
