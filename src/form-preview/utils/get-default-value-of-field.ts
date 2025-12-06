@@ -9,7 +9,7 @@ const FIELD_DEFAULT_VALUES: Record<TFieldType, TFieldValueType> = {
   textarea: "",
 }
 
-export const getDefaultValue = (field: TFormFieldSchemaType): TFieldValueType => {
+export const getDefaultValueOfField = (field: TFormFieldSchemaType): TFieldValueType => {
   if (field.defaultValue !== undefined) {
     return field.defaultValue
   }

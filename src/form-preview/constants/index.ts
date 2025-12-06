@@ -1,9 +1,8 @@
 import type { TFieldType } from "@/schema-builder/models"
-import {
-  INPUT_CHECKBOX_HANDLER_NAME,
-  INPUT_COMMON_HANDLER_NAME,
-  INPUT_NUMBER_HANDLER_NAME,
-} from "../utils"
+
+export const INPUT_COMMON_HANDLER_NAME = "handleInputChange"
+export const INPUT_NUMBER_HANDLER_NAME = "handleNumberChange"
+export const INPUT_CHECKBOX_HANDLER_NAME = "handleCheckboxChange"
 
 export const FIELDS_TYPES_COUNT_INITIAL_VALUE: Record<TFieldType, number> = {
   text: 0,

@@ -94,6 +94,12 @@ export const FormFieldSchema = z
       })
       .optional(),
 
+    class: z
+      .string({
+        message: "The 'class' field should be a text value",
+      })
+      .optional(),
+
     required: z
       .boolean({
         message: "The 'required' field should be true or false",

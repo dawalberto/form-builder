@@ -1,26 +1,28 @@
-export const INPUT_COMMON_HANDLER_NAME = "handleInputChange"
-export const INPUT_NUMBER_HANDLER_NAME = "handleNumberChange"
-export const INPUT_CHECKBOX_HANDLER_NAME = "handleCheckboxChange"
+import {
+  INPUT_CHECKBOX_HANDLER_NAME,
+  INPUT_COMMON_HANDLER_NAME,
+  INPUT_NUMBER_HANDLER_NAME,
+} from "@/form-preview/constants"
 
-export const generateInputCommonHandler = () => `
+export const generateInputCommonHandler = (formSetStateName: string) => `
   const ${INPUT_COMMON_HANDLER_NAME} = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+    ${formSetStateName}(prev => ({ ...prev, [name]: value }))
   }
   `
 
-export const generateInputNumberHandler = () => `
+export const generateInputNumberHandler = (formSetStateName: string) => `
   const ${INPUT_NUMBER_HANDLER_NAME} = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     const numericValue = value === "" ? "" : Number(value)
-    setFormData(prev => ({ ...prev, [name]: numericValue }))
+    ${formSetStateName}(prev => ({ ...prev, [name]: numericValue }))
   }
   `
 
-export const generateCheckboxHandler = () => `
+export const generateCheckboxHandler = (formSetStateName: string) => `
   const ${INPUT_CHECKBOX_HANDLER_NAME} = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target
-    setFormData(prev => ({ ...prev, [name]: checked }))
+    ${formSetStateName}(prev => ({ ...prev, [name]: checked }))
   }
   `
 

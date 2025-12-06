@@ -1,8 +1,7 @@
 import type { TFieldType, TFormSchemaType } from "@/schema-builder/models"
-import { STRING_COMPONENT_NAMES } from "@/shared/constants"
 
-export const generateFormDataType = (schema: TFormSchemaType): string => {
-  let typeString = `type ${STRING_COMPONENT_NAMES.FORM_DATA_TYPE} = {\n`
+export const generateFormType = (typeName: string, schema: TFormSchemaType): string => {
+  let typeString = `type ${typeName} = {\n`
   schema.fields.forEach((field) => {
     const fieldType = getTypeFromFieldType(field.type)
     typeString += `  ${field.name}: ${fieldType};\n`
