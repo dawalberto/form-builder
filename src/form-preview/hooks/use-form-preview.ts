@@ -6,14 +6,15 @@ import prettier from "prettier/standalone"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useLocation } from "wouter"
 import { useShallow } from "zustand/shallow"
+import { STRING_COMPONENT_NAMES } from "@/shared/constants"
 import { useAppStore } from "@/shared/stores"
 import { FIELDS_TYPES_COUNT_INITIAL_VALUE } from "../constants"
 import {
   generateCheckboxHandler,
   generateFormDataType,
+  generateInitialFormData,
   generateInputCommonHandler,
   generateInputNumberHandler,
-  getDefaultValue,
 } from "../utils"
 import { generateInputElementsList } from "../utils/generate-inputs-elements"
 
@@ -68,18 +69,14 @@ export const useFormPreview = () => {
     if (!schema) return ""
 
     const formDataType = generateFormDataType(schema)
+    const formInitialData = generateInitialFormData(schema)
 
     let code = `import type React from "react"\n`
     code += `import { useState } from "react"\n\n`
     code += `${formDataType}\n`
+    code += `${formInitialData}\n\n`
     code += `export const ${schema.name}Form = () => {\n`
-    code += "const [formData, setFormData] = useState<TFormData>({\n"
-
-    schema.fields.forEach((field, index) => {
-      const isLast = index === schema.fields.length - 1
-      code += `${field.name}: ${JSON.stringify(getDefaultValue(field))}${isLast ? "" : ","}\n`
-    })
-    code += "})\n\n"
+    code += `const [formData, setFormData] = useState<${STRING_COMPONENT_NAMES.FORM_DATA_TYPE}>(${STRING_COMPONENT_NAMES.FORM_INITIAL_DATA})\n`
 
     if (inputCommonHandler) {
       code += `${inputCommonHandler}\n`
@@ -95,10 +92,17 @@ export const useFormPreview = () => {
     code += `    e.preventDefault()\n`
     code += `    console.log(formData)\n`
     code += `  }\n\n`
+
+    code += `  const handleReset = (e: React.FormEvent) => {\n`
+    code += `    e.preventDefault()\n`
+    code += `    setFormData(${STRING_COMPONENT_NAMES.FORM_INITIAL_DATA})\n`
+    code += `  }\n\n`
+
     code += `  return (\n`
-    code += `    <form onSubmit={handleSubmit}>\n`
+    code += `    <form onSubmit={handleSubmit} onReset={handleReset}>\n`
     code += `      ${inputsElements}\n`
     code += `      <button type="submit">Submit</button>\n`
+    code += `      <button type="reset">Reset</button>\n`
     code += `    </form>\n`
     code += `  )\n`
     code += `}\n`
