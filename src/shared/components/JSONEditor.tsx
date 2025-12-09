@@ -2,18 +2,18 @@ import { SandpackCodeEditor, SandpackProvider, useSandpack } from "@codesandbox/
 import { useEffect } from "react"
 
 type JSONEditorProps = {
-  value?: string
+  initialValue?: string
   onChange?: (value: string) => void
 }
 
-export const JSONEditor = ({ value, onChange }: JSONEditorProps) => {
+export const JSONEditor = ({ initialValue, onChange }: JSONEditorProps) => {
   return (
     <SandpackProvider
       id="schemaJSON"
       template="vanilla"
       files={{
         "/schema.json": {
-          code: value || "",
+          code: initialValue || "",
           active: true,
         },
       }}

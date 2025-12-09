@@ -1,1 +1,1 @@
-export * from "./use-sticky-state"
+export * from "./use-local-storage-persistence"
