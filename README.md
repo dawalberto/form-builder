@@ -74,13 +74,13 @@ A valid form schema consists of a form name and an array of fields:
 
 - **id** (required): Unique field identifier - must be a valid JavaScript identifier
 - **name** (required): Unique field name - must be a valid JavaScript identifier
-- **type** (required): Field type - one of: `text`, `number`, `textarea`, `select`, `checkbox`, `radio`
+- **type** (required): Field type - one of: `text`, `password`, `email`, `url`, `tel`, `search`, `number`, `range`, `date`, `datetime-local`, `time`, `month`, `week`, `color`, `file`, `textarea`, `select`, `select-multiple`, `datalist`, `checkbox`, `radio`, `progress`, `meter`, `output`
 - **label** (optional): Display label for the field
 - **placeholder** (optional): Placeholder text
 - **class** (optional): CSS class names
 - **required** (optional): Whether the field is required (boolean)
 - **defaultValue** (optional): Initial value for the field
-- **options** (required for `select` and `radio`): Array of option objects with `label` and `value`
+- **options** (required for `select`, `select-multiple`, `radio`, and `datalist`): Array of option objects with `label` and `value`
 
 ### Supported Field Types
 
@@ -153,6 +153,207 @@ A valid form schema consists of a form name and an array of fields:
     { "label": "Male", "value": "male" },
     { "label": "Female", "value": "female" }
   ]
+}
+```
+
+#### password
+```json
+{
+  "id": "password",
+  "name": "password",
+  "type": "password",
+  "label": "Password",
+  "placeholder": "Enter password"
+}
+```
+
+#### email
+```json
+{
+  "id": "email",
+  "name": "email",
+  "type": "email",
+  "label": "Email",
+  "placeholder": "your@email.com"
+}
+```
+
+#### url
+```json
+{
+  "id": "website",
+  "name": "website",
+  "type": "url",
+  "label": "Website",
+  "placeholder": "https://example.com"
+}
+```
+
+#### tel
+```json
+{
+  "id": "phone",
+  "name": "phone",
+  "type": "tel",
+  "label": "Phone Number",
+  "placeholder": "+1234567890"
+}
+```
+
+#### search
+```json
+{
+  "id": "query",
+  "name": "query",
+  "type": "search",
+  "label": "Search",
+  "placeholder": "Search..."
+}
+```
+
+#### range
+```json
+{
+  "id": "volume",
+  "name": "volume",
+  "type": "range",
+  "label": "Volume",
+  "defaultValue": 50
+}
+```
+
+#### date
+```json
+{
+  "id": "birthDate",
+  "name": "birthDate",
+  "type": "date",
+  "label": "Birth Date"
+}
+```
+
+#### datetime-local
+```json
+{
+  "id": "appointment",
+  "name": "appointment",
+  "type": "datetime-local",
+  "label": "Appointment Time"
+}
+```
+
+#### time
+```json
+{
+  "id": "meetingTime",
+  "name": "meetingTime",
+  "type": "time",
+  "label": "Meeting Time"
+}
+```
+
+#### month
+```json
+{
+  "id": "birthMonth",
+  "name": "birthMonth",
+  "type": "month",
+  "label": "Birth Month"
+}
+```
+
+#### week
+```json
+{
+  "id": "vacationWeek",
+  "name": "vacationWeek",
+  "type": "week",
+  "label": "Vacation Week"
+}
+```
+
+#### color
+```json
+{
+  "id": "favoriteColor",
+  "name": "favoriteColor",
+  "type": "color",
+  "label": "Favorite Color",
+  "defaultValue": "#ff0000"
+}
+```
+
+#### file
+```json
+{
+  "id": "document",
+  "name": "document",
+  "type": "file",
+  "label": "Upload Document"
+}
+```
+
+#### select-multiple
+```json
+{
+  "id": "skills",
+  "name": "skills",
+  "type": "select-multiple",
+  "label": "Skills",
+  "options": [
+    { "label": "JavaScript", "value": "js" },
+    { "label": "Python", "value": "py" },
+    { "label": "Java", "value": "java" }
+  ]
+}
+```
+
+#### datalist
+```json
+{
+  "id": "city",
+  "name": "city",
+  "type": "datalist",
+  "label": "City",
+  "placeholder": "Enter city name",
+  "options": [
+    { "label": "New York", "value": "new-york" },
+    { "label": "Los Angeles", "value": "los-angeles" },
+    { "label": "Chicago", "value": "chicago" }
+  ]
+}
+```
+
+#### progress
+```json
+{
+  "id": "completion",
+  "name": "completion",
+  "type": "progress",
+  "label": "Completion",
+  "defaultValue": 75
+}
+```
+
+#### meter
+```json
+{
+  "id": "score",
+  "name": "score",
+  "type": "meter",
+  "label": "Score",
+  "defaultValue": 80
+}
+```
+
+#### output
+```json
+{
+  "id": "result",
+  "name": "result",
+  "type": "output",
+  "label": "Result",
+  "defaultValue": "No result yet"
 }
 ```
 
