@@ -75,7 +75,12 @@ export class FormStringBuilder {
       code += `  ${generateInputCommonHandler(this.formSetStateName)}\n`
     }
 
-    if (fieldsTypesCount.number > 0 || fieldsTypesCount.range > 0) {
+    if (
+      fieldsTypesCount.number > 0 ||
+      fieldsTypesCount.range > 0 ||
+      fieldsTypesCount.progress > 0 ||
+      fieldsTypesCount.meter > 0
+    ) {
       code += `  ${generateInputNumberHandler(this.formSetStateName)}\n`
     }
 
