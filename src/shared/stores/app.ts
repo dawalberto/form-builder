@@ -1,5 +1,6 @@
 import type { ZodError } from "zod"
 import { create } from "zustand"
+import { devtools } from "zustand/middleware"
 import type { TFormSchemaType } from "@/schema-builder/models"
 
 type TSchemaValidations = {
@@ -16,20 +17,29 @@ type AppState = {
   setTSchemaValidations: (validations: TSchemaValidations | null) => void
 }
 
-export const useAppStore = create<AppState>((set, get) => ({
-  schema: null,
-  schemaValidations: null,
-  isValidSchema: false,
+export const useAppStore = create<AppState>()(
+  devtools(
+    (set, get) => ({
+      schema: null,
+      schemaValidations: null,
+      isValidSchema: false,
 
-  setSchema: (schema) => set({ schema }),
-  setTSchemaValidations: (schemaValidations) => {
-    const schema = get().schema
-    set({
-      schemaValidations,
-      isValidSchema: isValidSchema(schema, schemaValidations),
-    })
-  },
-}))
+      setSchema: (schema) => set({ schema }, false, "setSchema"),
+      setTSchemaValidations: (schemaValidations) => {
+        const schema = get().schema
+        set(
+          {
+            schemaValidations,
+            isValidSchema: isValidSchema(schema, schemaValidations),
+          },
+          false,
+          "setTSchemaValidations",
+        )
+      },
+    }),
+    { name: "FormBuilderStore" },
+  ),
+)
 
 const isValidSchema = (
   schema: AppState["schema"],
