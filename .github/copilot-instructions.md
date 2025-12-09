@@ -41,10 +41,21 @@ Each feature module contains: `views/`, `hooks/`, `utils/`, `models/`, `validati
 - Results structure: `{ validJSON: boolean | null, fieldsErrors: ZodError[] | null }`
 
 ### Field Type System
-Supported types: `text`, `number`, `textarea`, `select`, `checkbox`, `radio`
-- `select`/`radio` require `options` array (enforced via `superRefine`)
+Supported types: `text`, `password`, `email`, `url`, `tel`, `search`, `number`, `range`, `date`, `datetime-local`, `time`, `month`, `week`, `color`, `file`, `textarea`, `select`, `select-multiple`, `datalist`, `checkbox`, `radio`, `progress`, `meter`, `output`
+- `select`/`select-multiple`/`radio`/`datalist` require `options` array (enforced via `superRefine`)
 - Each type maps to specific TypeScript types in generated code (see `generate-form-type.ts`)
+  - Text-based inputs: `string` (text, password, email, url, tel, search, date, datetime-local, time, month, week, color, datalist, output)
+  - Numeric inputs: `number` (number, range, progress, meter)
+  - Boolean: `boolean` (checkbox)
+  - File: `File | null` (file)
+  - Multi-select: `string[]` (select-multiple)
+  - Radio: `string | number | boolean` (radio)
 - Handler generation is conditional based on field types present (`getFieldsTypesCount`)
+  - `handleInputChange`: Common handler for text-based inputs and single select
+  - `handleNumberChange`: Handler for number and range inputs
+  - `handleCheckboxChange`: Handler for checkbox inputs
+  - `handleFileChange`: Handler for file inputs
+  - `handleSelectMultipleChange`: Handler for multi-select dropdowns
 
 ### Sandpack Integration
 Two separate Sandpack instances:
