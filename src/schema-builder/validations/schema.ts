@@ -81,10 +81,38 @@ export const FormFieldSchema = z
       })
       .optional(),
 
-    type: z.enum(["text", "number", "textarea", "select", "checkbox", "radio"], {
-      message:
-        "Oops! The 'type' field is missing or invalid. Please use one of: text, number, textarea, select, checkbox, or radio",
-    }),
+    type: z.enum(
+      [
+        "text",
+        "number",
+        "textarea",
+        "select",
+        "checkbox",
+        "radio",
+        "password",
+        "email",
+        "url",
+        "tel",
+        "search",
+        "date",
+        "datetime-local",
+        "time",
+        "month",
+        "week",
+        "range",
+        "color",
+        "file",
+        "datalist",
+        "progress",
+        "meter",
+        "output",
+        "select-multiple",
+      ],
+      {
+        message:
+          "Oops! The 'type' field is missing or invalid. Please use one of the supported field types",
+      },
+    ),
 
     defaultValue: z.any().optional(),
 
@@ -125,7 +153,7 @@ export const FormFieldSchema = z
       .optional(),
   })
   .superRefine((field, ctx) => {
-    if (["select", "radio"].includes(field.type)) {
+    if (["select", "radio", "select-multiple", "datalist"].includes(field.type)) {
       if (!field.options || field.options.length === 0) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,

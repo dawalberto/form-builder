@@ -7,9 +7,11 @@ import type { TFormSchemaType } from "@/schema-builder/models"
 import { generateFormType, generateInputElementsList, getFieldsTypesCount } from "../utils"
 import {
   generateCheckboxHandler,
+  generateFileHandler,
   generateInitialFormData,
   generateInputCommonHandler,
   generateInputNumberHandler,
+  generateSelectMultipleHandler,
 } from "../utils/use-state"
 
 export class FormStringBuilder {
@@ -55,17 +57,38 @@ export class FormStringBuilder {
       fieldsTypesCount.text > 0 ||
       fieldsTypesCount.radio > 0 ||
       fieldsTypesCount.select > 0 ||
-      fieldsTypesCount.textarea > 0
+      fieldsTypesCount.textarea > 0 ||
+      fieldsTypesCount.password > 0 ||
+      fieldsTypesCount.email > 0 ||
+      fieldsTypesCount.url > 0 ||
+      fieldsTypesCount.tel > 0 ||
+      fieldsTypesCount.search > 0 ||
+      fieldsTypesCount.date > 0 ||
+      fieldsTypesCount["datetime-local"] > 0 ||
+      fieldsTypesCount.time > 0 ||
+      fieldsTypesCount.month > 0 ||
+      fieldsTypesCount.week > 0 ||
+      fieldsTypesCount.color > 0 ||
+      fieldsTypesCount.datalist > 0 ||
+      fieldsTypesCount.output > 0
     ) {
       code += `  ${generateInputCommonHandler(this.formSetStateName)}\n`
     }
 
-    if (fieldsTypesCount.number > 0) {
+    if (fieldsTypesCount.number > 0 || fieldsTypesCount.range > 0) {
       code += `  ${generateInputNumberHandler(this.formSetStateName)}\n`
     }
 
     if (fieldsTypesCount.checkbox > 0) {
       code += `  ${generateCheckboxHandler(this.formSetStateName)}\n`
+    }
+
+    if (fieldsTypesCount.file > 0) {
+      code += `  ${generateFileHandler(this.formSetStateName)}\n`
+    }
+
+    if (fieldsTypesCount["select-multiple"] > 0) {
+      code += `  ${generateSelectMultipleHandler(this.formSetStateName)}\n`
     }
 
     code += `
