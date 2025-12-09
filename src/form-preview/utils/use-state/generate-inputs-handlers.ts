@@ -1,7 +1,9 @@
 import {
   INPUT_CHECKBOX_HANDLER_NAME,
   INPUT_COMMON_HANDLER_NAME,
+  INPUT_FILE_HANDLER_NAME,
   INPUT_NUMBER_HANDLER_NAME,
+  INPUT_SELECT_MULTIPLE_HANDLER_NAME,
 } from "@/form-preview/constants"
 
 export const generateInputCommonHandler = (formSetStateName: string) => `
@@ -26,17 +28,17 @@ export const generateCheckboxHandler = (formSetStateName: string) => `
   }
   `
 
-// export const generateSelectSingleHandler = () => `
-//   const handleSelectSingleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-//     const { name, value } = e.target
-//     setFormData(prev => ({ ...prev, [name]: value }))
-//   }
-//   `
+export const generateFileHandler = (formSetStateName: string) => `
+  const ${INPUT_FILE_HANDLER_NAME} = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target
+    ${formSetStateName}(prev => ({ ...prev, [name]: files?.[0] || null }))
+  }
+  `
 
-// export const generateSelectMultipleHandler = () => `
-//     const handleSelectMultipleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-//       const { name, options } = e.target
-//       const selectedValues = Array.from(options).filter(o => o.selected).map(o => o.value)
-//       setFormData(prev => ({ ...prev, [name]: { ...prev[name], value: selectedValues } }))
-//     }
-//     `
+export const generateSelectMultipleHandler = (formSetStateName: string) => `
+  const ${INPUT_SELECT_MULTIPLE_HANDLER_NAME} = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, options } = e.target
+    const selectedValues = Array.from(options).filter(o => o.selected).map(o => o.value)
+    ${formSetStateName}(prev => ({ ...prev, [name]: selectedValues }))
+  }
+  `
