@@ -130,3 +130,11 @@ This project is in its initial phase with `useState` pattern implementation. The
 - Advanced form patterns (multi-step, dynamic arrays, etc.)
 
 When implementing features, design for extensibility to accommodate these future patterns while maintaining the current simple API.
+
+## Documentation Maintenance
+**CRITICAL**: After generating or modifying code, always update all related documentation files to keep them in sync:
+- `README.md` - Update usage examples, API changes, new features
+- `.github/copilot-instructions.md` - Update patterns, workflows, constraints
+- Any other docs files (guides, tutorials, etc.)
+
+Documentation must accurately reflect the current state of the codebase at all times. Treat documentation updates as part of the implementation, not optional.
