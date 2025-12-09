@@ -18,7 +18,7 @@ type AppState = {
 }
 
 export const useAppStore = create<AppState>()(
-  devtools(
+  devtools<AppState>(
     (set, get) => ({
       schema: null,
       schemaValidations: null,
