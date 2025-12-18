@@ -1,5 +1,5 @@
 import { SandpackCodeEditor, SandpackProvider, useSandpack } from "@codesandbox/sandpack-react"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 type JSONEditorProps = {
   initialValue?: string
@@ -7,13 +7,29 @@ type JSONEditorProps = {
 }
 
 export const JSONEditor = ({ initialValue, onChange }: JSONEditorProps) => {
+  const [key, setKey] = useState(0)
+  const [currentValue, setCurrentValue] = useState(initialValue || "")
+
+  useEffect(() => {
+    const handleSchemaUpdate = (event: CustomEvent<{ schema: string }>) => {
+      setCurrentValue(event.detail.schema)
+      setKey((prev) => prev + 1)
+    }
+
+    window.addEventListener("schema-updated", handleSchemaUpdate as EventListener)
+    return () => {
+      window.removeEventListener("schema-updated", handleSchemaUpdate as EventListener)
+    }
+  }, [])
+
   return (
     <SandpackProvider
+      key={key}
       id="schemaJSON"
       template="vanilla"
       files={{
         "/schema.json": {
-          code: initialValue || "",
+          code: currentValue,
           active: true,
         },
       }}
@@ -23,7 +39,7 @@ export const JSONEditor = ({ initialValue, onChange }: JSONEditorProps) => {
         showLineNumbers={true}
         wrapContent={true}
         style={{ height: "90dvh" }}
-        className="border border-stone-400 text-sm"
+        className="text-sm"
       />
       <ValueUpdater onChange={onChange} />
     </SandpackProvider>

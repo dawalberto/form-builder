@@ -6,7 +6,7 @@ A React/TypeScript form builder that generates React form components from JSON s
 
 Form Builder is a tool that allows you to define form schemas in JSON format and instantly see a live preview of the generated React component. It features a two-view architecture:
 
-- **Schema Builder**: JSON editor with real-time validation
+- **Schema Builder**: JSON editor with real-time validation and quick-add field shortcuts
 - **Form Preview**: Live React component preview powered by Sandpack
 
 The generated forms use React's `useState` pattern with TypeScript types automatically inferred from your schema.
@@ -29,7 +29,9 @@ npm run dev
 pnpm dev
 ```
 
-Visit `http://localhost:5173` and start building your form by pasting a JSON schema.
+Visit `http://localhost:5173` and start building your form by:
+1. Using the quick-add field shortcuts (click the colored buttons with icons)
+2. Or manually pasting a JSON schema into the editor
 
 ### Other Commands
 

@@ -1,12 +1,12 @@
 # Form Builder - AI Agent Instructions
 
 ## Project Overview
-A React/TypeScript form builder that accepts JSON schemas and generates React form components with live preview. Two-view architecture: Schema Builder (JSON editor with validation) and Form Preview (Sandpack-powered live React component).
+A React/TypeScript form builder that accepts JSON schemas and generates React form components with live preview. Two-view architecture: Schema Builder (JSON editor with validation and quick-add field shortcuts) and Form Preview (Sandpack-powered live React component).
 
 ## Architecture
 
 ### Module Structure (Feature-Based)
-- `src/schema-builder/` - JSON schema editor and validation
+- `src/schema-builder/` - JSON schema editor, validation, and field shortcuts
 - `src/form-preview/` - Dynamic form generation and rendering
 - `src/shared/` - Cross-feature utilities, stores, and components
 
@@ -16,12 +16,27 @@ Each feature module contains: `views/`, `hooks/`, `utils/`, `models/`, `validati
 - **Zustand** global store (`src/shared/stores/app.ts`): Schema state, validation results, and `isValidSchema` computed flag
 - Use `useShallow` from `zustand/shallow` for selective subscriptions to prevent re-renders
 - LocalStorage persistence via `useLocalStoragePersistence` hook (debounced by default)
+- **Schema shortcuts update flow**: SchemaShortcuts → updates Zustand store → updates LocalStorage → dispatches custom event → JSONEditor re-renders
 
 ### Key Data Flow
-1. User edits JSON in Schema Builder → debounced validation (300ms)
+1. User edits JSON in Schema Builder OR clicks field shortcut → debounced validation (300ms)
 2. Zod validates schema → results stored in Zustand + LocalStorage
 3. Form Preview reads valid schema → `FormStringBuilder` generates React code string
 4. Sandpack renders generated code with live preview
+
+### Schema Shortcuts System
+- **Location**: `SchemaShortcuts` component in Schema Builder view above JSONEditor
+- **Field Templates**: Defined in `schema-builder/constants/field-templates.ts` grouped by category
+  - Text Inputs: text, email, password, url, tel, search, textarea
+  - Number Inputs: number, range
+  - Date & Time: date, datetime-local, time, month, week
+  - Selection: checkbox, radio, select, select-multiple, datalist
+  - Other: color, file, progress, meter, output
+- **Icon Library**: Uses Lucide React icons mapped to each field type
+- **Template Structure**: Each template includes type, label, placeholder, defaultValue, options (if required), icon, color
+- **Field Generation**: `generateFieldFromTemplate` utility creates unique fields with sequential type-based naming (e.g., `text_1`, `text_2`, `email_1`)
+- **Schema Update**: `addFieldToSchema` appends new field to existing schema or creates minimal schema if none exists
+- **Sync Mechanism**: Custom `schema-updated` event triggers JSONEditor re-render via key prop change
 
 ## Critical Patterns
 
@@ -62,6 +77,8 @@ Two separate Sandpack instances:
 1. **JSONEditor** (`schema-builder`): Vanilla template for JSON editing
    - Custom `ValueUpdater` component hooks into Sandpack context for change tracking
    - Debounced onChange triggers validation + persistence
+   - Listens for `schema-updated` custom events to re-render when fields are added via shortcuts
+   - Uses `key` prop to force re-mount on schema updates from shortcuts
 2. **FormPreview** (`form-preview`): React-TS template for live component preview
    - External CSS (sakura.css) for basic styling
    - Read-only mode with `/form.tsx` as active file
